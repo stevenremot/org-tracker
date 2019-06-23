@@ -1,4 +1,5 @@
 ;;; org-tracker.el --- Opens references to your issues in org mode -*- lexical-binding: t -*-
+;; Version: 1.0.0
 ;; Package-Requires: ((dash "2.14.0") (request "0.3.0"))
 
 ;;; Commentary:
