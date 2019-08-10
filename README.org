@@ -1,0 +1,97 @@
+#+TITLE: Org tracker - Emacs package for interacting with issue trackers from org-mode
+* Description
+
+  This package adds commands to interact with issue trackers from an
+  org document.
+
+  It allows you to keep track of your issues in an org document, and
+  to quickly interact with your tracker for some common features.
+
+* Supported trackers
+
+  - Redmine
+  - Gitlab
+
+* Features
+
+  - Quickly open issues in your web browser
+  - Send time tracked with org clock to your tracker
+
+* Commands
+
+  | Command                           | Description                                           |
+  |-----------------------------------+-------------------------------------------------------|
+  | ~org-tracker-open-issue-at-point~ | When the point is on an issue id, open this issue     |
+  | ~org-tracker-open-current-issue~  | Open the issue currently clocked in                   |
+  | ~org-tracker-track-time-at-point~ | Log the clock entry currently at point in the tracker |
+
+* Setup
+
+** init.el
+
+   Example for loading the package with ~quelpa-use-package~:
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package org-tracker
+	    :bind (("C-c r j" . org-tracker-open-issue-at-point)
+		   ("C-c r J" . org-tracker-open-current-issue)
+		   ("C-c r t" . org-tracker-track-time-at-point))
+	    :quelpa (org-tracker
+		     :fetcher github
+		     :repo "stevenremot/org-tracker"))
+   #+END_SRC
+
+** Tracker configuration
+
+   In your ~.authinfo~ or ~.authinfo.gpg~:
+
+   #+BEGIN_SRC text
+     # Redmine
+     machine redmine.domain.com login <your-login> password <api-key>
+
+     # Gitlab
+     machine gitlab.com login <your-login> password <api-key>
+   #+END_SRC
+
+* Example file
+
+  #+BEGIN_SRC org
+    ,* My redmine project
+      :PROPERTIES:
+      :tracker: redmine
+      :redmine-repo: https://redmine.domain.com
+      :END:
+
+    ,** #123456 - Fix this annoying bug
+
+    ,*** Investigation
+	:LOGBOOK:
+	CLOCK: [2019-08-10 sam. 11:00]--[2019-08-10 sam. 11:30] =>  0:30
+	:END:
+
+    ,*** Apply patch
+	:LOGBOOK:
+	CLOCK: [2019-08-10 sam. 11:30]--[2019-08-10 sam. 12:15] =>  0:45
+	:END:
+
+    ,* My gitlab project
+      :PROPERTIES:
+      :tracker: gitlab
+      :gitlab-repo: https://gitlab.com
+      :gitlab-project: my-user/my-repo
+      :END:
+
+    ,** #123456 - Add this cool feature
+       :LOGBOOK:
+       CLOCK: [2019-08-10 sam. 11:00]--[2019-08-10 sam. 11:30] =>  0:30
+       :END:
+
+    ,*** Apply return
+	:LOGBOOK:
+	CLOCK: [2019-08-11 sam. 11:30]--[2019-08-11 sam. 11:45] =>  0:15
+	:END:
+  #+END_SRC
+
+* License
+
+  Licensed under the GPL v3 license, see LICENSE for details.
