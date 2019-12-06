@@ -69,18 +69,16 @@ REFERENCE is the issue reference."
 	(goto-char (marker-position marker)))
       (org-tracker-open-issue (org-tracker-get-current-tracker (point)) reference))))
 
-(defun org-tracker--get-current-issue ()
-  "Return the reference in the org item currently clocked in."
-  (org-tracker-get-ref-in-string org-clock-current-task))
-
 ;;;###autoload
 (defun org-tracker-open-current-issue ()
   "Open the reference of the org issue currently clocked in."
   (interactive)
-  (let ((reference (org-tracker--get-current-issue)))
-    (unless reference
-      (error "No item currently clocked in"))
-    (org-tracker-open-issue (org-tracker-get-current-tracker org-clock-marker) reference)))
+  (unless org-clock-marker
+    (error "No item currently clocked in"))
+  (with-current-buffer (marker-buffer org-clock-marker)
+    (save-window-excursion
+      (goto-char (marker-position org-clock-marker))
+      (org-tracker-open-issue (org-tracker-get-current-tracker (point)) (org-tracker-get-issue-for-point)))))
 
 
 ;; Time tracking
